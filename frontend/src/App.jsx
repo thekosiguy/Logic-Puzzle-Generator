@@ -142,6 +142,10 @@ const ErrorText = styled(StatusText)`
   color: #fecaca;
 `;
 
+const ValidationBlock = styled.div`
+  margin-top: 0.5rem;
+`;
+
 const HintList = styled.ul`
   list-style: none;
   padding-left: 0;
@@ -363,11 +367,11 @@ function App() {
                 </PrimaryButton>
                 {error && <ErrorText>{error}</ErrorText>}
                 {!error && validationMessage && (
-                  <>
+                  <ValidationBlock>
                     {validationState === 'success' && <SuccessText>{validationMessage}</SuccessText>}
                     {validationState === 'error' && <ErrorText>{validationMessage}</ErrorText>}
                     {validationState === 'info' && <InfoText>{validationMessage}</InfoText>}
-                  </>
+                  </ValidationBlock>
                 )}
               </div>
             </Sidebar>
