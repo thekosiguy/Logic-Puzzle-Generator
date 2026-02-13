@@ -1,0 +1,38 @@
+# Node / dependencies
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Build output
+dist/
+build/
+coverage/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# SQLite databases
+puzzles.db
+
+# Playwright artifacts
+playwright-report/
+test-results/
+

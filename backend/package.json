@@ -1,0 +1,28 @@
+{
+  "name": "logic-puzzle-generator-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Logic Puzzle Generator (Sudoku and other logic puzzles)",
+  "main": "src/puzzle_server.js",
+  "scripts": {
+    "start": "node src/puzzle_server.js",
+    "dev": "nodemon src/puzzle_server.js"
+  },
+  "keywords": [
+    "logic",
+    "puzzle",
+    "sudoku",
+    "api",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
