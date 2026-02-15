@@ -122,7 +122,7 @@ export function SudokuBoard({ puzzle, userGrid, solution, showSolution, conflict
       <BoardTitle>Sudoku board</BoardTitle>
       <BoardSub>
         {isShowingSolution
-          ? <><strong>Solution</strong> — generate a new puzzle to play again.</>
+          ? <><strong>Solution</strong> - generate a new puzzle to play again.</>
           : 'Click into blank cells and type 1–9 to solve. Conflicts will glow red.'}
       </BoardSub>
       <Grid>
