@@ -132,6 +132,27 @@ const PrimaryButton = styled.button`
   }
 `;
 
+const SecondaryButton = styled.button`
+  margin-top: 0.5rem;
+  display: block;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  background: transparent;
+  color: #94a3b8;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.15);
+    color: #e2e8f0;
+    border-color: rgba(148, 163, 184, 0.6);
+  }
+`;
+
 const StatusText = styled.p`
   margin: 0;
   font-size: 0.8rem;
@@ -178,6 +199,7 @@ function App() {
   const [conflicts, setConflicts] = useState(new Set());
   const [validationMessage, setValidationMessage] = useState('');
   const [validationState, setValidationState] = useState('idle'); // idle | info | success | error
+  const [showSolution, setShowSolution] = useState(false);
 
   const computeConflicts = (grid) => {
     const conflictsSet = new Set();
@@ -329,6 +351,7 @@ function App() {
       setSolution(data.solution || null);
       setLastGeneratedId(data.id);
       setConflicts(new Set());
+      setShowSolution(false);
     } catch (e) {
       console.error(e);
       setError(e.message || 'Something went wrong while contacting the API.');
@@ -354,6 +377,8 @@ function App() {
             <SudokuBoard
               puzzle={puzzle}
               userGrid={userGrid}
+              solution={solution}
+              showSolution={showSolution}
               conflicts={conflicts}
               onCellChange={handleCellChange}
             />
@@ -365,6 +390,11 @@ function App() {
                 <PrimaryButton onClick={handleGenerate} disabled={loading}>
                   {loading ? 'Generating…' : 'Generate Puzzle'}
                 </PrimaryButton>
+                {puzzle && solution && !showSolution && (
+                  <SecondaryButton type="button" onClick={() => setShowSolution(true)}>
+                    Give up & view solution
+                  </SecondaryButton>
+                )}
                 {error && <ErrorText>{error}</ErrorText>}
                 {!error && validationMessage && (
                   <ValidationBlock>

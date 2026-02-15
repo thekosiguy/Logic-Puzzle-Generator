@@ -39,8 +39,10 @@ const Cell = styled.div`
   align-items: center;
   justify-content: center;
   font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  color: ${({ $isFixed }) => ($isFixed ? '#e5e7eb' : '#cbd5f5')};
-  background-color: ${({ $band }) => ($band ? 'rgba(15, 23, 42, 0.9)' : 'rgba(15, 23, 42, 0.7)')};
+  color: ${({ $isFixed, $isRevealed }) =>
+    $isRevealed ? '#86efac' : $isFixed ? '#e5e7eb' : '#cbd5f5'};
+  background-color: ${({ $band, $isRevealed }) =>
+    $isRevealed ? 'rgba(34, 197, 94, 0.12)' : $band ? 'rgba(15, 23, 42, 0.9)' : 'rgba(15, 23, 42, 0.7)'};
   border-right: 1px solid
     ${({ $isConflict }) => ($isConflict ? 'rgba(248, 113, 113, 0.95)' : 'rgba(51, 65, 85, 0.6)')};
   border-bottom: 1px solid
@@ -98,7 +100,7 @@ const EmptyText = styled.p`
   color: #9ca3af;
 `;
 
-export function SudokuBoard({ puzzle, userGrid, conflicts, onCellChange }) {
+export function SudokuBoard({ puzzle, userGrid, solution, showSolution, conflicts, onCellChange }) {
   if (!puzzle) {
     return (
       <BoardWrapper>
@@ -112,24 +114,31 @@ export function SudokuBoard({ puzzle, userGrid, conflicts, onCellChange }) {
     );
   }
 
-  const gridToRender = userGrid || puzzle;
+  const isShowingSolution = showSolution && solution;
+  const gridToRender = isShowingSolution ? solution : (userGrid || puzzle);
 
   return (
     <BoardWrapper>
       <BoardTitle>Sudoku board</BoardTitle>
-      <BoardSub>Click into blank cells and type 1–9 to solve. Conflicts will glow red.</BoardSub>
+      <BoardSub>
+        {isShowingSolution
+          ? <><strong>Solution</strong> — generate a new puzzle to play again.</>
+          : 'Click into blank cells and type 1–9 to solve. Conflicts will glow red.'}
+      </BoardSub>
       <Grid>
         {gridToRender.flat().map((value, index) => {
           const row = Math.floor(index / 9);
           const col = index % 9;
           const isBand = (Math.floor(row / 3) + Math.floor(col / 3)) % 2 === 0;
-          const isFixed = puzzle[row][col] !== 0;
-          const isConflict = conflicts?.has?.(`${row}-${col}`);
+          const wasGiven = puzzle[row][col] !== 0;
+          const isFixed = isShowingSolution || wasGiven;
+          const isConflict = !isShowingSolution && conflicts?.has?.(`${row}-${col}`);
+          const isRevealed = isShowingSolution && !wasGiven;
 
           return (
-            <Cell key={index} $isFixed={isFixed} $band={isBand} $isConflict={isConflict}>
-              {isFixed ? (
-                puzzle[row][col]
+            <Cell key={index} $isFixed={isFixed} $band={isBand} $isConflict={isConflict} $isRevealed={isRevealed}>
+              {isShowingSolution || wasGiven ? (
+                value
               ) : (
                 <CellInput
                   inputMode="numeric"
